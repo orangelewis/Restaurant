@@ -1,0 +1,72 @@
+{% extends "management/base.html" %}
+{% load staticfiles %}
+{% block title %}查看订单{% endblock %}
+
+{% block content %}
+
+    <div class="container">
+
+                    <h3>编号：{{ order.id_order }}</h3>
+                    <h3>总额：{{ order.total }}</h3>
+                    <button id="add_it"><a href="{% url 'add_orderItem' %}?id={{ order.id }}">添加菜品</a></button>
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>菜品</th>
+                            <th>数量</th>
+                            <th>单价</th>
+                            <th>金额</th>
+                            <th>更改</th>
+                            <th>删除</th>
+
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for od in orderItem %}
+
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td><a href="{% url 'item_detail' %}?id={{ od.id_item.id }}">{{ od.id_item.name_dish}}</a></td>
+                                <td>{{ od.item_total}}</td>
+                                <td>{{ od.id_item.price}}</td>
+                                <td>{{ od.total }}</td>
+                                <td><a href="{% url 'editOrderItem' %}?id={{ od.id }}&od={{ order.id }}">更改</a></td>
+                                <td><a href="{% url 'delOrderItem' %}?id={{ od.id }}&od={{ order.id }}">删除</a></td>
+
+
+
+                            </tr>
+
+
+                        {% empty %}
+                            <tr>
+                                <td>暂无选购</td>
+                            </tr>
+
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                    <nav>
+                        <ul class="pager">
+                            {% if orderItem.has_previous %}
+                                <li class="previous"><a
+                                        href="?typ={{ query_category }}&page={{ orderItem.previous_page_number }}">上一页</a>
+                                </li>
+                            {% else %}
+                                <li class="previous disabled"><a href="#">上一页</a></li>
+                            {% endif %}
+                            第 {{ orderItem.number }} / {{ orderItem.paginator.num_pages }}页
+                            {% if orderItem.has_next %}
+                                <li class="next"><a
+                                        href="?typ={{ query_category }}&page={{ orderItem.next_page_number }}">下一页</a>
+                                </li>
+                            {% else %}
+                                <li class="next disabled"><a href="#">下一页</a></li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+
+    </div>
+
+{% endblock %}

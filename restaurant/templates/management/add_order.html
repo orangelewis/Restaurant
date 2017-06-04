@@ -1,0 +1,17 @@
+{% extends "management/base.html" %}
+{% load staticfiles %}
+{% block title %}添加订单{% endblock %}
+
+{% block content %}
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3 col-sm-10 col-sm-offset-1">
+                  <h2 >添加成功</h2>
+                  <button id="add_ot"><a href="{% url 'order_detail' %}?id={{order.id }}">开始点单</a></button>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}

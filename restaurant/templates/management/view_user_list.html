@@ -1,0 +1,109 @@
+{% extends "management/base.html" %}
+{% load staticfiles %}
+{% block title %}查看职工{% endblock %}
+
+{% block content %}
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1">
+                <div class="col-md-2">
+                    <div class="list-group">
+                        <a href="{% url 'view_user_list' %}" class="list-group-item" id="id_category_all">
+                            全部职工
+                        </a>
+
+                    </div>
+                    <script type="text/javascript">
+                        $('#id_category_all').addClass("active");
+                    </script>
+                </div>
+                <div class="col-md-9 col-md-offset-1">
+                  {% if user.myuser.permission > 1 %}
+                  <div class="form-inline">
+                    <button id="add"><a href="{% url 'signup' %}">添加职工</a></button>
+                  </div>
+                  {% endif %}
+
+
+
+                    <div class="col-md-4 col-md-offset-8">
+
+                        <form role="form" method="post" name="search_form">
+                            {% csrf_token %}
+                            <input type="search" class="form-control" name="keyword"
+                                   placeholder="Enter keywords to search" id="id_search_input" onkeyup="key_up()"
+                                   autofocus>
+
+                        </form>
+                    </div>
+
+                    <script type="text/javascript">
+                        function key_up() {
+                            var old_value = $('#id_search_input').val();
+                            setTimeout(function () {
+                                var new_value = $('#id_search_input').val();
+                                if (old_value == new_value) {
+                                    document.search_form.submit();
+                                }
+                            }, 1500);
+                        }
+                    </script>
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>编号</th>
+                            <th>名字</th>
+                            <th>邮箱</th>
+                            <th>删除</th>
+
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for us in users %}
+                        {% if us.user.username != 'admin' %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ us.user.username}}</a></td>
+                                <td>{{ us.nickname }}</td>
+                                <td>{{ us.user.email }}</td>
+
+                                <td><a href="{% url 'delUser' %}?id={{ us.id }}">删除</a></td>
+
+                            </tr>
+                        {% endif %}
+                        {% empty %}
+                            <tr>
+                                <td>暂无员工</td>
+                            </tr>
+
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                    <nav>
+                        <ul class="pager">
+                            {% if users.has_previous %}
+                                <li class="previous"><a
+                                        href="?typ={{ query_category }}&page={{ users.previous_page_number }}">上一页</a>
+                                </li>
+                            {% else %}
+                                <li class="previous disabled"><a href="#">上一页</a></li>
+                            {% endif %}
+                            第 {{ users.number }} / {{ users.paginator.num_pages }}页
+                            {% if users.has_next %}
+                                <li class="next"><a
+                                        href="?typ={{ query_category }}&page={{ items.next_page_number }}">下一页</a>
+                                </li>
+                            {% else %}
+                                <li class="next disabled"><a href="#">下一页</a></li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}

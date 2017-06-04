@@ -1,0 +1,54 @@
+{% extends "management/base.html" %}
+{% block title %}选购{% endblock %}
+
+{% block content %}
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3 col-sm-10 col-sm-offset-1">
+                {% if state == 'success' %}
+                    <div class="well">
+                        <h2 class="text-success text-center"><a href="{% url 'order_detail' %}?id={{ od.id }}">添加成功(点击返回)</a></h2>
+                    </div>
+                {% elif state == 'error' %}
+                    <div class="well">
+                        <h2 class="text-danger text-center">添加失败</h2>
+                    </div>
+                {% endif %}
+                <form method="POST" role="form" class="form-horizontal" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <h1 class="form-signin-heading text-center">选购</h1>
+
+
+
+                    <div class="form-group">
+                        <label for="id_item" class="col-md-3 control-label">所属菜品：</label>
+                        <div class="col-md-9">
+                            <select name="item" id="id_item" class="form-control">
+                                {% for item in item_list %}
+                                    <option value="{{ item.id }}">{{ item.name_dish }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="id_name" class="col-md-3 control-label">数量：</label>
+                        <div class="col-md-9">
+                            <input type="text" class="form-control" id="id_item_total" required name="item_total" autofocus>
+                        </div>
+                    </div>
+
+
+
+                    <div class="form-group">
+                        <div class="col-md-4 col-md-offset-4">
+                            <button class="btn btn btn-primary btn-block" type="submit">提交</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
