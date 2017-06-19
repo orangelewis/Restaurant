@@ -10,3 +10,4 @@
 
 
 *本项目根据https://github.com/yumendy/LibraryManagement 项目更改
+*管理员账号密码都是admin 
